@@ -61,6 +61,21 @@ resource "yandex_compute_instance" "public-instance" {
   }
 }
 ```
+
+```console
+ssh ubuntu@51.250.72.109
+
+ubuntu@public-instance:~$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=58 time=21.6 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=58 time=21.0 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=58 time=21.1 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=58 time=21.0 ms
+^C
+--- 8.8.8.8 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 21.012/21.183/21.648/0.269 ms
+```
 ### Приватная подсеть.
 ### - Создать в VPC subnet с названием private, сетью 192.168.20.0/24.
 ### - Создать route table. Добавить статический маршрут, направляющий весь исходящий трафик private сети в NAT-инстанс.
