@@ -88,4 +88,14 @@ resource "yandex_vpc_subnet" "private" {
 }
 ```
 ### - Создать route table. Добавить статический маршрут, направляющий весь исходящий трафик private сети в NAT-инстанс.
+```console
+resource "yandex_vpc_route_table" "netology-routing" {
+  name       = "netology-routing"
+  network_id = yandex_vpc_network.network-netology.id
+  static_route {
+    destination_prefix = "0.0.0.0/0"
+    next_hop_address   = "192.168.10.254"
+  }
+}
+```
 ### - Создать в этой приватной подсети виртуалку с внутренним IP, подключиться к ней через виртуалку, созданную ранее, и убедиться, что есть доступ к интернету.
