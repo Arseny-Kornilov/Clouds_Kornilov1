@@ -3,6 +3,15 @@
 ### Создать пустую VPC. Выбрать зону.
 ### Публичная подсеть.
 ### - Создать в VPC subnet с названием public, сетью 192.168.10.0/24.
+```console
+Public subnet
+resource "yandex_vpc_subnet" "public" {
+  name           = "public"
+  zone           = var.yc_zone
+  network_id     = yandex_vpc_network.network-netology.id
+  v4_cidr_blocks = ["192.168.10.0/24"]
+}
+```
 ### - Создать в этой подсети NAT-инстанс, присвоив ему адрес 192.168.10.254. В качестве image_id использовать fd80mrhj8fl2oe87o4e1.
 ### - Создать в этой публичной подсети виртуалку с публичным IP, подключиться к ней и убедиться, что есть доступ к интернету.
 
