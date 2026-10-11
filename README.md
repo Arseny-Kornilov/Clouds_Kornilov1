@@ -78,5 +78,14 @@ rtt min/avg/max/mdev = 21.012/21.183/21.648/0.269 ms
 ```
 ### Приватная подсеть.
 ### - Создать в VPC subnet с названием private, сетью 192.168.20.0/24.
+```console
+resource "yandex_vpc_subnet" "private" {
+  name           = "private"
+  zone           = var.yc_zone
+  network_id     = yandex_vpc_network.network-netology.id
+  route_table_id = yandex_vpc_route_table.netology-routing.id
+  v4_cidr_blocks = ["192.168.20.0/24"]
+}
+```
 ### - Создать route table. Добавить статический маршрут, направляющий весь исходящий трафик private сети в NAT-инстанс.
 ### - Создать в этой приватной подсети виртуалку с внутренним IP, подключиться к ней через виртуалку, созданную ранее, и убедиться, что есть доступ к интернету.
