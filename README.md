@@ -132,3 +132,22 @@ resource "yandex_compute_instance" "private-instance" {
 | xxxxxxxxxxxxxxxxxxxx | nat-instance     | ru-central1-a | RUNNING | 84.201.134.247 | 192.168.10.254 |
 +----------------------+------------------+---------------+---------+----------------+----------------+
 ```
+
+```console
+scp ~/.ssh/id_ed25519 ubuntu@51.250.1.121:/home/ubuntu/.ssh/
+id_ed25519    
+
+ssh ubuntu@51.250.1.121
+
+ssh 192.168.20.19
+
+ubuntu@private-instance:~$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=54 time=17.4 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=54 time=16.3 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=54 time=16.2 ms
+^C
+--- 8.8.8.8 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 16.171/16.610/17.358/0.531 ms
+```
