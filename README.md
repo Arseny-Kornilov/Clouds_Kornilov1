@@ -99,3 +99,36 @@ resource "yandex_vpc_route_table" "netology-routing" {
 }
 ```
 ### - Создать в этой приватной подсети виртуалку с внутренним IP, подключиться к ней через виртуалку, созданную ранее, и убедиться, что есть доступ к интернету.
+```console
+resource "yandex_compute_instance" "private-instance" {
+  name = "private-instance"
+  hostname = "private-instance"
+  zone     = var.yc_zone
+  resources {
+    cores  = 2
+    memory = 2
+  }
+  boot_disk {
+    initialize_params {
+      image_id = "fd8bkgba66kkf9eenpkb"
+    }
+  }
+  network_interface {
+    subnet_id = yandex_vpc_subnet.private.id
+  }
+  metadata = {
+    ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
+  }
+}
+```
+
+```console
+  yc compute instance list
++----------------------+------------------+---------------+---------+----------------+----------------+
+|          ID          |       NAME       |    ZONE ID    | STATUS  |  EXTERNAL IP   |  INTERNAL IP   |
++----------------------+------------------+---------------+---------+----------------+----------------+
+| xxxxxxxxxxxxxxxxxxxx | public-instance  | ru-central1-a | RUNNING | 51.250.1.121   | 192.168.10.3   |
+| xxxxxxxxxxxxxxxxxxxx | private-instance | ru-central1-a | RUNNING |                | 192.168.20.19  |
+| xxxxxxxxxxxxxxxxxxxx | nat-instance     | ru-central1-a | RUNNING | 84.201.134.247 | 192.168.10.254 |
++----------------------+------------------+---------------+---------+----------------+----------------+
+```
