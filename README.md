@@ -38,7 +38,29 @@ resource "yandex_compute_instance" "nat-instance" {
 }
 ```
 ### - Создать в этой публичной подсети виртуалку с публичным IP, подключиться к ней и убедиться, что есть доступ к интернету.
-
+```console
+resource "yandex_compute_instance" "public-instance" {
+  name = "public-instance"
+  hostname = "public-instance"
+  zone     = var.yc_zone
+  resources {
+    cores  = 2
+    memory = 2
+  }
+  boot_disk {
+    initialize_params {
+      image_id = "fd826honb8s0i1jtt6cg"
+    }
+  }
+  network_interface {
+    subnet_id = yandex_vpc_subnet.public.id
+    nat       = true
+  }
+  metadata = {
+    ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
+  }
+}
+```
 ### Приватная подсеть.
 ### - Создать в VPC subnet с названием private, сетью 192.168.20.0/24.
 ### - Создать route table. Добавить статический маршрут, направляющий весь исходящий трафик private сети в NAT-инстанс.
