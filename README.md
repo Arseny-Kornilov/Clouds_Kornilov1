@@ -13,6 +13,30 @@ resource "yandex_vpc_subnet" "public" {
 }
 ```
 ### - Создать в этой подсети NAT-инстанс, присвоив ему адрес 192.168.10.254. В качестве image_id использовать fd80mrhj8fl2oe87o4e1.
+```console
+resource "yandex_compute_instance" "nat-instance" {
+  name = "nat-instance"
+  hostname = "nat-instance"
+  zone     = var.yc_zone
+  resources {
+    cores  = 2
+    memory = 2
+  }
+  boot_disk {
+    initialize_params {
+      image_id = "fd80mrhj8fl2oe87o4e1"
+    }
+  }
+  network_interface {
+    subnet_id = yandex_vpc_subnet.public.id
+    ip_address = "192.168.10.254"
+    nat       = true
+  }
+  metadata = {
+    ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
+  }
+}
+```
 ### - Создать в этой публичной подсети виртуалку с публичным IP, подключиться к ней и убедиться, что есть доступ к интернету.
 
 ### Приватная подсеть.
